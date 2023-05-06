@@ -47,6 +47,7 @@ const Questions = () => {
     if (response?.results.length) {
       // Get answers
       const question = response.results[questionIndex];
+
       let answers = [...question.incorrect_answers];
       answers.splice(
         getRandomInt(question.incorrect_answers.length),
@@ -58,13 +59,9 @@ const Questions = () => {
     }
   }, [response, questionIndex]);
 
-  if (loading) {
-    return (
-      <Box mt={20}>
-        <CircularProgress />
-      </Box>
-    );
-  }
+  const handleBackToSettings = () => {
+    navigate("/");
+  };
 
   const handleClickAnswer = (e) => {
     // Select answer
@@ -81,6 +78,28 @@ const Questions = () => {
     }
     //End Select answer
   };
+
+  if (loading) {
+    return (
+      <Box mt={20}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (response.results[questionIndex].question) {
+    return (
+      <Box mt={20}>
+        <Typography variant="h6" color="error">
+          Either the number of questions is too many, or there are no questions
+          of the specified type
+        </Typography>
+        <Button onClick={handleBackToSettings} variant="outlined" sx={{ marginTop: 2 }}>
+          Back to settings!
+        </Button>
+      </Box>
+    );
+  }
 
   return (
     <Box>
